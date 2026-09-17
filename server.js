@@ -13,7 +13,7 @@ app.post('/api/chat', async (req, res) => {
         'Authorization': 'Bearer ${process.env.DEEPSEEK_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'deepseek-v4-flash',
+        model: 'deepseek-flash',
         messages: req.body.messages,
         temperature: req.body.temperature ?? 0.7
       })
