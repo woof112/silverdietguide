@@ -28,3 +28,5 @@ app.post('/api/chat', async (req, res) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => console.log(`已啟動：http://localhost:${port}`));
+
+console.log('Key exists:', !!process.env.DEEPSEEK_API_KEY);
