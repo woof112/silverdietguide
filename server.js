@@ -17,10 +17,10 @@ app.post('/api/chat', async (req, res) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${process.env.DEEPSEEK_API_KEY}'
+        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'deepseek-v4.1-flash',
+        model: 'deepseek-flash',
         messages: req.body.messages,
         temperature: req.body.temperature ?? 0.7
       })
@@ -35,6 +35,3 @@ app.post('/api/chat', async (req, res) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => console.log(`已啟動：http://localhost:${port}`));
-
-console.log('Key exists:', !!process.env.DEEPSEEK_API_KEY);
-
