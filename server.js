@@ -30,3 +30,6 @@ const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => console.log(`已啟動：http://localhost:${port}`));
 
 console.log('Key exists:', !!process.env.DEEPSEEK_API_KEY);
+
+const key = process.env.DEEPSEEK_API_KEY || '';
+console.log('Key length:', key.length, '| First 6:', key.slice(0, 6), '| Last 4:', key.slice(-4));
