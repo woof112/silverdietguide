@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>銀髮健食寶 - 長者中西醫綜合膳食指引</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- FontAwesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<!-- Noto Sans HK Font -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+html {
+  font-size: 16px;
+  transition: font-size 0.2s ease-in-out;
+}
+body {
+  font-family: 'Noto Sans HK', sans-serif;
+  background-color: #F8FAF9;
+  color: #2D3748;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E0;
+  border-radius: 4px;
+}
+/* Pulse animation for AI listening status */
+.pulse-animation {
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(229, 62, 62, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(229, 62, 62, 0); }
+}
+</style>
+</head>
+
+<body class="min-h-screen flex flex-col justify-between selection:bg-teal-100 pb-20 md:pb-0">
+<header class="bg-teal-700 text-white sticky top-0 z-40 shadow-md">
+<div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="bg-white text-teal-700 p-2 rounded-xl text-xl font-black shadow">
+<i class="fa-solid fa-bowl-rice"></i>
+</div>
+<div>
+<h1 class="text-xl md:text-2xl font-bold tracking-wide">銀髮健食寶</h1>
+<p class="text-xs text-teal-100">中西醫雙重把關，安全安心膳食</p>
+</div>
+</div>
+<!-- Accessibility Toolbar: Font Size Controls -->
+<div class="flex items-center bg-teal-800 rounded-lg p-1 border border-teal-600 shrink-0">
+<span class="text-xs mr-1 pl-1 hidden sm:inline text-teal-200">字體:</span>
+<button onclick="changeFontSize('sm')" id="btn-font-sm" class="px-2.5 py-1 text-xs font-bold rounded-md transition-all bg-white text-teal-800 shadow">標準</button>
+<button onclick="changeFontSize('md')" id="btn-font-md" class="px-2.5 py-1 text-xs font-bold rounded-md transition-all text-teal-100 hover:text-white">中 1.2x</button>
+<button onclick="changeFontSize('lg')" id="btn-font-lg" class="px-2.5 py-1 text-xs font-bold rounded-md transition-all text-teal-100 hover:text-white">大 1.4x</button>
+</div>
+</div>
+</header>
+
+<main class="max-w-4xl mx-auto px-4 py-4 w-full flex-grow">
+<!-- Navigation Tabs -->
+<nav class="flex rounded-2xl bg-white p-1.5 shadow-sm border border-gray-200 mb-5 overflow-x-auto gap-1">
+<button onclick="switchTab('filter')" id="tab-filter" class="flex-1 min-w-[90px] py-2.5 px-3 rounded-xl font-bold text-sm text-center transition-all bg-teal-600 text-white shadow-sm flex items-center justify-center gap-1.5">
+<i class="fa-solid fa-sliders text-base"></i> 條件篩選
+</button>
+<button onclick="switchTab('universal')" id="tab-universal" class="flex-1 min-w-[90px] py-2.5 px-3 rounded-xl font-bold text-sm text-center transition-all text-gray-600 hover:bg-teal-50 flex items-center justify-center gap-1.5">
+<i class="fa-solid fa-shield-heart text-emerald-600 text-base"></i> 全病通用<span class="bg-emerald-100 text-emerald-800 text-xs px-1.5 py-0.5 rounded-full font-bold">5大精選</span>
+</button>
+<button onclick="switchTab('library')" id="tab-library" class="flex-1 min-w-[90px] py-2.5 px-3 rounded-xl font-bold text-sm text-center transition-all text-gray-600 hover:bg-teal-50 flex items-center justify-center gap-1.5">
+<i class="fa-solid fa-book-open text-base"></i> 食材菜式庫
+</button>
+<button onclick="switchTab('ai')" id="tab-ai" class="flex-1 min-w-[90px] py-2.5 px-3 rounded-xl font-bold text-sm text-center transition-all text-gray-600 hover:bg-teal-50 flex items-center justify-center gap-1.5">
+<i class="fa-solid fa-robot text-purple-600 text-base"></i> DeepSeek AI顧問
+</button>
+</nav>
+
+<section id="view-filter" class="space-y-6">
+<!-- Instructions Banner -->
+<div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl shadow-sm flex items-start space-x-3">
+<i class="fa-solid fa-circle-info text-amber-600 text-xl mt-0.5"></i>
+<div class="text-sm text-amber-900 leading-relaxed">
+<p class="font-bold">提示：可同時點選多種中西醫病症/體質！</p>
+<p class="text-xs text-amber-800 mt-1">系統採用嚴格安全防護機制，只要菜式對您選擇的<b>任何一種病症不宜</b>（例如糖尿病不宜吃高糖紅棗糖水），就會自動排除該菜式，確保長者飲食安全。</p>
+</div>
+</div>
+
+<!-- Condition Selector Boxes -->
+<div class="grid md:grid-cols-2 gap-4">
+<!-- Western Medicine Conditions -->
+<div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+<h2 class="text-base font-bold text-blue-900 mb-3 flex items-center gap-2">
+<i class="fa-solid fa-hospital text-blue-600"></i> 西醫常見病症(可複選)
+</h2>
+<div class="grid grid-cols-2 gap-2" id="western-conditions">
+<!-- JS populated -->
+</div>
+</div>
+<!-- TCM Patterns / Constitutions -->
+<div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+<h2 class="text-base font-bold text-emerald-900 mb-3 flex items-center gap-2">
+<i class="fa-solid fa-leaf text-emerald-600"></i> 中醫證型/體質(可複選)
+</h2>
+<div class="grid grid-cols-2 gap-2" id="tcm-conditions">
+<!-- JS populated -->
+</div>
+</div>
+</div>
+
+<!-- Active Filters Bar & Reset -->
+<div class="bg-gray-100 p-3 rounded-xl flex items-center justify-between flex-wrap gap-2">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="text-xs font-bold text-gray-600">已選條件:</span>
+<div id="active-tags" class="flex flex-wrap gap-1.5">
+<span class="text-xs text-gray-400 italic">尚未選擇(顯示全部安全菜式)</span>
+</div>
+</div>
+<button onclick="resetFilters()" class="text-xs font-bold text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-all">
+<i class="fa-solid fa-arrow-rotate-left"></i> 重置篩選
+</button>
+</div>
+
+<!-- Dynamic Conflict Warning Banner -->
+<div id="conflict-warning-container" class="hidden"></div>
+
+<!-- Filtered Recipe Count -->
+<div class="flex items-center justify-between border-b border-gray-200 pb-2">
+<h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
+<i class="fa-solid fa-utensils text-teal-600"></i> 符合條件的安全膳食
+</h3>
+<span id="filtered-count-badge" class="bg-teal-100 text-teal-800 font-bold px-3 py-0.5 rounded-full text-xs">
+共 0 項
+</span>
+</div>
+
+<!-- Filtered Items Grid -->
+<div id="filter-results-grid" class="grid sm:grid-cols-2 gap-4">
+<!-- JS Populated Cards -->
+</div>
+</section>
+
+<section id="view-universal" class="hidden space-y-6">
+<div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden">
+<div class="relative z-10">
+<span class="bg-emerald-400/30 text-emerald-100 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">長者特別防護認證</span>
+<h2 class="text-2xl font-black mt-2">5大全病通用膳食佳餚</h2>
+<p class="text-sm text-emerald-100 mt-1 max-w-xl">
+這5道特別精選的菜式與食材，經過嚴格驗證，即使同時患有<b>糖尿病、高血壓、高血脂、痛風、蠶豆症(G6PD)、慢性腎病及肌少症</b>，亦可安全享用！
+</p>
+</div>
+<i class="fa-solid fa-heart-pulse absolute -right-4 -bottom-4 text-9xl text-white/10"></i>
+</div>
+
+<div id="universal-dishes-grid" class="grid sm:grid-cols-2 gap-4">
+<!-- JS Populated -->
+</div>
+</section>
+
+<section id="view-library" class="hidden space-y-5">
+<!-- Search bar & Categories -->
+<div class="space-y-3">
+<div class="relative">
+<i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400"></i>
+<input type="text" id="library-search-input" oninput="renderLibrary()" placeholder="搜尋食材或菜式名稱(例:霸王花、西洋菜、魚肉、蘋果...)" class="w-full pl-11 pr-10 py-3 rounded-2xl border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm shadow-sm">
+<button onclick="startVoiceSearch('library-search-input')" class="absolute right-3 top-2.5 p-1.5 text-teal-600 hover:bg-teal-50 rounded-xl transition-all" title="語音搜尋">
+<i class="fa-solid fa-microphone text-lg"></i>
+</button>
+</div>
+<!-- Category Pills -->
+<div class="flex gap-2 overflow-x-auto pb-2 text-xs font-bold" id="category-pills">
+<!-- JS generated -->
+</div>
+</div>
+
+<!-- Library Grid -->
+<div id="library-results-grid" class="grid sm:grid-cols-2 gap-4">
+<!-- JS Populated -->
+</div>
+</section>
+
+<section id="view-ai" class="hidden space-y-4">
+<!-- AI Banner -->
+<div class="bg-gradient-to-r from-purple-700 to-indigo-800 text-white p-5 rounded-3xl shadow-md">
+<div class="flex items-center space-x-3">
+<div class="bg-white/20 p-3 rounded-2xl text-2xl">
+<i class="fa-solid fa-robot"></i>
+</div>
+<div>
+<h2 class="text-xl font-black">DeepSeek 長者營養顧問</h2>
+<p class="text-xs text-purple-200">按麥克風語音輸入或打字，DeepSeek AI 能記住對話並必定提供簡單食譜！</p>
+</div>
+</div>
+</div>
+
+<!-- Chat Window Container -->
+<div class="bg-white rounded-3xl border border-gray-200 shadow-sm h-[420px] flex flex-col overflow-hidden">
+<!-- Chat Log -->
+<div id="chat-log" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm">
+<div class="flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-xs shrink-0">AI</div>
+<div class="bg-purple-50 text-purple-950 p-3.5 rounded-2xl rounded-tl-none max-w-[85%] border border-purple-100 leading-relaxed">
+您好！我是您的專屬健康膳食 DeepSeek AI 助手。您可以跟我說：「我有糖尿病跟高血壓，今天想吃家常菜，有什麼推介嗎？」我每次都會為您附上「老友記簡單煮」步驟！
+</div>
+</div>
+</div>
+
+<!-- Input Controls -->
+<div class="p-3 bg-gray-50 border-t border-gray-200 flex items-center gap-2">
+<button id="btn-ai-voice" onclick="toggleAiVoice()" class="w-12 h-12 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center text-xl shrink-0 transition-all shadow-sm" title="按住說話">
+<i class="fa-solid fa-microphone"></i>
+</button>
+<input type="text" id="ai-text-input" onkeydown="handleAiInputKeydown(event)" placeholder="請輸入您的症狀或飲食疑問..." class="flex-1 px-4 py-3 rounded-2xl border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:outline-none text-sm">
+<button onclick="sendChatMessage()" class="w-12 h-12 rounded-2xl bg-purple-700 hover:bg-purple-800 text-white flex items-center justify-center text-lg shrink-0 transition-all shadow-sm">
+<i class="fa-solid fa-paper-plane"></i>
+</button>
+</div>
+</div>
+<p class="text-xs text-center text-gray-400">※提示：點擊 AI 回應旁邊的喇叭按鈕，即可讓系統朗讀內容給長者聽。</p>
+</section>
+</main>
+
+<div id="detail-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+<div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
+<!-- Modal Header -->
+<div id="modal-header-bg" class="p-5 text-white flex justify-between items-start relative bg-teal-700">
+<div>
+<span id="modal-category" class="bg-white/20 text-white text-xs px-2.5 py-1 rounded-full font-bold">分類</span>
+<h2 id="modal-title" class="text-2xl font-black mt-1">菜式名稱</h2>
+</div>
+<button onclick="closeModal()" class="bg-white/20 hover:bg-white/30 text-white rounded-full w-9 h-9 flex items-center justify-center transition-all">
+<i class="fa-solid fa-xmark text-xl"></i>
+</button>
+</div>
+
+<!-- Modal Content (Scrollable) -->
+<div class="p-5 overflow-y-auto space-y-5 text-sm flex-1">
+<!-- TCM Nutrition Block -->
+<div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl space-y-2">
+<h3 class="font-bold text-emerald-900 text-base flex items-center gap-2">
+<i class="fa-solid fa-leaf text-emerald-600"></i> 中醫食療價值(性味歸經)
+</h3>
+<div class="grid grid-cols-2 gap-2 text-xs">
+<div class="bg-white p-2 rounded-xl border border-emerald-100">
+<span class="text-gray-500 block">【性味】</span>
+<span id="modal-tcm-nature" class="font-bold text-emerald-800 text-sm">--</span>
+</div>
+<div class="bg-white p-2 rounded-xl border border-emerald-100">
+<span class="text-gray-500 block">【歸經】</span>
+<span id="modal-tcm-meridian" class="font-bold text-emerald-800 text-sm">--</span>
+</div>
+</div>
+<div class="bg-white p-2.5 rounded-xl border border-emerald-100 text-xs">
+<span class="text-gray-500 block font-bold mb-0.5">【中醫功效】</span>
+<p id="modal-tcm-efficacy" class="text-emerald-950 leading-relaxed text-sm">--</p>
+</div>
+</div>
+
+<!-- Western Nutrition Block -->
+<div class="bg-blue-50 border border-blue-200 p-4 rounded-2xl space-y-2">
+<h3 class="font-bold text-blue-900 text-base flex items-center gap-2">
+<i class="fa-solid fa-dna text-blue-600"></i> 西醫營養與長者身體實質好處
+</h3>
+<p id="modal-western-nutrition" class="text-blue-950 leading-relaxed text-sm bg-white p-3 rounded-xl border border-blue-100">--</p>
+</div>
+
+<!-- Unsuitable Warning Box -->
+<div id="modal-unsuitable-container" class="hidden">
+<div class="flex items-start gap-2 bg-red-50 p-3 rounded-xl border border-red-200">
+<i class="fa-solid fa-triangle-exclamation text-red-500 mt-0.5"></i>
+<div class="text-xs text-red-900">
+<span class="font-bold">禁忌/不宜症狀:</span>
+<span id="modal-unsuitable" class="font-semibold">--</span>
+</div>
+</div>
+</div>
+
+<!-- Simple Cooking Steps -->
+<div id="modal-cooking-section" class="space-y-2">
+<h3 class="font-bold text-gray-900 text-base flex items-center gap-2">
+<i class="fa-solid fa-fire-burner text-amber-600"></i> 老友記簡單煮 - 簡易烹調法
+</h3>
+<ol id="modal-cooking-steps" class="space-y-2 text-xs list-decimal list-inside bg-gray-50 p-3.5 rounded-2xl border border-gray-200 text-gray-800">
+<!-- JS populated -->
+</ol>
+</div>
+</div>
+
+<!-- Modal Footer -->
+<div class="p-3 bg-gray-100 border-t border-gray-200 flex justify-end">
+<button onclick="speakModalText()" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-bold text-xs flex items-center gap-2 transition-all">
+<i class="fa-solid fa-volume-high"></i> 語音朗讀此菜式
+</button>
+</div>
+</div>
+</div>
+
+<script>
+// =========================================================================
+// 請在下方替換為您的 DeepSeek API Key (例如: "sk-xxxxxxxxxxxxxxxx")
+// =========================================================================
+const DEEPSEEK_API_KEY = "YOUR_DEEPSEEK_API_KEY_HERE";
+
+const WESTERN_CONDITIONS = [
+  { id: 'diabetes', name: '糖尿病', icon: 'fa-droplet' },
+  { id: 'hypertension', name: '高血壓', icon: 'fa-heart-pulse' },
+  { id: 'hyperlipidemia', name: '高血脂', icon: 'fa-vial' },
+  { id: 'gout', name: '痛風/高尿酸', icon: 'fa-bone' },
+  { id: 'g6pd', name: '蠶豆症(G6PD)', icon: 'fa-shield-virus' },
+  { id: 'kidney', name: '慢性腎臟病', icon: 'fa-lungs' },
+  { id: 'sarcopenia', name: '肌少症(肌肉流失)', icon: 'fa-child-reaching' },
+  { id: 'osteoporosis', name: '骨質疏鬆症', icon: 'fa-cubes-stacked' },
+  { id: 'chewing', name: '牙齒問題(咬唔郁)', icon: 'fa-tooth' }
+];
+
+const TCM_CONDITIONS = [
+  { id: 'yin_deficiency', name: '陰虛火旺(口乾易上火)', icon: 'fa-fire' },
+  { id: 'spleen_weakness', name: '脾胃虛弱(消化力差/易瀉)', icon: 'fa-stroopwafel' },
+  { id: 'damp_heat', name: '濕熱體質(身重黏膩)', icon: 'fa-droplet-slash' },
+  { id: 'qi_blood_def', name: '氣血不足(頭暈疲倦)', icon: 'fa-battery-quarter' },
+  { id: 'liver_kidney_def', name: '肝腎陰虛(腰膝酸軟)', icon: 'fa-user-nurse' }
+];
+
+const FOOD_DATABASE = [
+  // UNIVERSAL SAFE DISHES (5 Items - Safe for ALL Conditions)
+  {
+    id: 'uni-1',
+    name: '清蒸黃花魚配蒸絲瓜',
+    category: '香港家常菜',
+    isUniversal: true,
+    type: 'recipe',
+    unsuitable: [],
+    tcm: { nature: '平性', meridian: '脾、胃經', efficacy: '健脾開胃、補虛安神、利水消腫。絲瓜清熱化痰，適合長者日常溫補。' },
+    western: '【保持肌肉量&保護心血管】提供極高生物價優質蛋白質，預防長者肌少症。富含Omega-3多元不飽和脂肪酸，能降低血脂、預防心血管硬化。水溶性纖維高且嘌呤極低，不增加腎臟負擔。',
+    steps: [
+      '將黃花魚洗淨切薑絲，絲瓜去皮切塊鋪在盤底。',
+      '大火隔水蒸8分鐘至魚肉熟透。',
+      '出鍋前淋上極少許減鹽蒸魚豉油及幾滴香油即可享用。'
+    ]
+  },
+  {
+    id: 'uni-2',
+    name: '燕麥冬瓜瘦肉湯',
+    category: '滋補湯水',
+    isUniversal: true,
+    type: 'recipe',
+    unsuitable: [],
+    tcm: { nature: '微涼平和', meridian: '脾、小腸、膀胱經', efficacy: '利水消腫、清熱祛濕、健脾養胃。冬瓜清熱不傷正氣，燕麥和胃。' },
+    western: '【降血脂&穩血糖】燕麥中的β-聚葡萄糖可有效吸收膽汁酸並排出體外，達到降低血液膽固醇效果；高鉀低鈉冬瓜輔助穩定血壓，瘦肉脂肪極低，避免高血脂長者血脂飆升。',
+    steps: [
+      '冬瓜去皮切小塊，瘦豚肉切薄片用少許蛋白醃5分鐘。',
+      '水滾後放入冬瓜煮10分鐘至軟身。',
+      '加入燕麥片及瘦肉片滾3分鐘至熟，加微量鹽調味。'
+    ]
+  },
+  {
+    id: 'uni-3',
+    name: '蒸南瓜蛋白肉碎',
+    category: '香港家常菜',
+    isUniversal: true,
+    type: 'recipe',
+    unsuitable: [],
+    tcm: { nature: '溫平', meridian: '脾、胃經', efficacy: '補中益氣、健脾和胃。雞蛋清與南瓜皆為潤燥補虛佳品。' },
+    western: '【預防肌少症&護眼延衰】蛋白提供零膽固醇、零嘌呤的頂級蛋白質，極度適合腎臟保養與痛風長者維持肌肉量；南瓜富含胡蘿蔔素及果膠，延緩網膜退化並減緩血糖吸收。',
+    steps: [
+      '南瓜切小丁蒸軟，蛋白2隻打勻加等量溫水。',
+      '將少許瘦肉碎與南瓜丁混入蛋白液中。',
+      '中火蒸7分鐘至蛋白凝固，質地柔軟極易咀嚼消化。'
+    ]
+  },
+  {
+    id: 'uni-4',
+    name: '鮮淮山蘋果燉瘦肉湯',
+    category: '滋補湯水',
+    isUniversal: true,
+    type: 'recipe',
+    unsuitable: [],
+    tcm: { nature: '平性', meridian: '脾、肺、腎經', efficacy: '益氣養陰、補脾肺腎、生津止渴。淮山為平補三焦之聖藥。' },
+    western: '【保護腸道&穩定血壓】鮮淮山之黏液蛋白能保護長者胃黏膜，抑制餐後血糖快速上升；蘋果富含果膠水溶性纖維，能結合腸道毒素排出，全湯低鈉無嘌呤，極安全。',
+    steps: [
+      '鮮淮山戴手套去皮切段，蘋果去芯切塊。',
+      '瘦肉汆水去除雜質與血水。',
+      '所有材料加入清水燉煮45分鐘，免加重鹽即可飲用。'
+    ]
+  },
+  {
+    id: 'uni-5',
+    name: '白灼西蘭花炒雞胸肉絲',
+    category: '西式菜式',
+    isUniversal: true,
+    type: 'recipe',
+    unsuitable: [],
+    tcm: { nature: '平性', meridian: '腎、脾、胃經', efficacy: '補腎填精、健腦壯骨、補脾和胃。' },
+    western: '【延緩大腦退化&強化肌肉】西蘭花含豐富蘿蔔硫素與葉酸，能對抗腦部氧化壓力、延緩認知退化；低脂雞胸肉能精準補充長者每日所需蛋白質，保持腿部肌力。',
+    steps: [
+      '西蘭花切小朵，雞胸肉切絲用少許生粉抓勻。',
+      '西蘭花於沸水中焯燙2分鐘撈起。',
+      '熱鍋下少許橄欖油，快炒雞絲至變白，倒入西蘭花兜勻即可。'
+    ]
+  },
+
+  {
+    id: 'home-1',
+    name: '勝瓜鯪魚球',
+    category: '香港家常菜',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout'],
+    tcm: { nature: '涼平', meridian: '脾、胃、肝經', efficacy: '清熱化痰、涼血通絡、健脾補虛。勝瓜清甜利水，魚球補中益氣。' },
+    western: '【護心血管&低脂易消化】勝瓜富含水溶性膳食纖維與微量元素，鯪魚肉質細嫩且含優質蛋白質及不飽和脂肪酸。注意：魚肉含中等嘌呤，痛風發作期長者宜適量。',
+    steps: [
+      '勝瓜去皮切滾刀塊，鯪魚肉加入少許陳皮絲與胡椒粉順方向打至彈牙。',
+      '沸水放入薑片與勝瓜煮開，將鯪魚肉用匙羹擠成球狀下鍋。',
+      '大火滾煮5分鐘至魚球浮起，加少許鹽與香油調味即可。'
+    ]
+  },
+  {
+    id: 'home-2',
+    name: '節瓜粉絲蝦米',
+    category: '香港家常菜',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout', 'kidney'],
+    tcm: { nature: '平微溫', meridian: '脾、胃、腎經', efficacy: '健脾開胃、清熱利尿、生津止渴。節瓜不寒不燥，極適合長者體質。' },
+    western: '【豐富膳食纖維&開胃補鈣】節瓜含水量高且鈉含量低，蝦米含有豐富鈣質；但乾海鮮蝦米含嘌呤及磷較高，痛風及慢性腎病長者需注意。',
+    steps: [
+      '節瓜去皮切絲，粉絲浸軟切段，蝦米洗淨浸軟。',
+      '少許油爆香薑絲與蝦米，倒入節瓜絲翻炒。',
+      '加入少許高湯或水燜煮5分鐘，最後加入粉絲吸收湯汁即可。'
+    ]
+  },
+  {
+    id: 'home-3',
+    name: '菜心炒牛肉',
+    category: '香港家常菜',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout'],
+    tcm: { nature: '微溫', meridian: '脾、胃、肝經', efficacy: '補中益氣、滋養脾胃、強筋健骨、清熱解毒。' },
+    western: '【預防貧血&強化肌肉】瘦牛肉富含血紅素鐵質、鋅及蛋白質，能預防長者肌肉流失與貧血；菜心提供豐富維他命C與鈣質，幫助鐵質吸收。牛肉含嘌呤，痛風者控量。',
+    steps: [
+      '牛肉切薄片，用少許生抽、生粉與植物油醃製10分鐘。',
+      '菜心洗淨切段，沸水焯燙1分鐘撈出。',
+      '熱鍋快炒牛肉至七成熟，放入菜心兜勻，加少許蠔油快速出鍋。'
+    ]
+  },
+  {
+    id: 'home-4',
+    name: '蝦仁炒蛋',
+    category: '香港家常菜',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout', 'hyperlipidemia'],
+    tcm: { nature: '溫平', meridian: '脾、胃、腎經', efficacy: '補腎壯陽、滋陰潤燥、養血安神。質地滑嫩易吞嚥。' },
+    western: '【高效補蛋白質&護眼】雞蛋與蝦仁提供吸收率最高的優質蛋白質，蛋黃含葉黃素保護眼睛。蝦仁嘌呤較高，蛋黃含膽固醇，高血脂及痛風患者適量享用。',
+    steps: [
+      '鮮蝦仁去蝦線，用少許胡椒粉與蛋白抓勻。',
+      '雞蛋打散加少許水與鹽，蝦仁先燙至八成熟撈出混入蛋液。',
+      '熱鍋溫油，倒入蛋液快炒至滑蛋狀態即可關火。'
+    ]
+  },
+  {
+    id: 'home-5',
+    name: '豆腐蒸鯇魚',
+    category: '香港家常菜',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout'],
+    tcm: { nature: '平微溫', meridian: '脾、胃、肺經', efficacy: '健脾利濕、清熱解毒、補中益氣、生津潤燥。' },
+    western: '【雙重植物與動物蛋白&補鈣】豆腐富含大豆異黃酮與鈣質，鯇魚肉質柔軟提供必需胺基酸，極易吞嚥吸收。豆類與魚肉含中等嘌呤，尿酸高長者需注意。',
+    steps: [
+      '軟豆腐切厚片鋪底，鯇魚腩洗淨切塊用薑絲及少許鹽醃製。',
+      '將魚塊鋪在豆腐上，大火隔水蒸9分鐘。',
+      '出鍋後撒上蔥花，淋上少許熟油與減鹽蒸魚豉油。'
+    ]
+  },
+  {
+    id: 'home-6',
+    name: '馬蹄蒸肉餅',
+    category: '香港家常菜',
+    isUniversal: true,
+    type: 'recipe',
+    unsuitable: [],
+    tcm: { nature: '平涼', meridian: '脾、胃、肺經', efficacy: '滋陰潤燥、清熱生津、開胃消食。馬蹄清脆解膩。' },
+    western: '【輕鬆咀嚼&質地清爽】使用精瘦豚肉剁成肉餅，脂肪極低；馬蹄富含膳食纖維與水分，可增加口感並促進腸道蠕動，極適合牙力較弱長者。',
+    steps: [
+      '馬蹄去皮切細粒，瘦肉剁碎。',
+      '肉碎加入馬蹄粒、少許生粉、水及醬油攪拌至有黏性，鋪平於盤中。',
+      '大火蒸10分鐘至徹底熟透即可。'
+    ]
+  },
+
+  {
+    id: 'soup-1',
+    name: '霸王花豬骨湯',
+    category: '滋補湯水',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout', 'kidney', 'hypertension'],
+    tcm: { nature: '微涼', meridian: '肺、胃、大腸經', efficacy: '清少陽之熱、潤肺止咳、滋陰清熱、通便解毒。' },
+    western: '【潤肺止咳&豐富膳食纖維】霸王花含黏液質與纖維，能滋潤呼吸道黏膜，紓緩長者秋燥乾咳。注意：老火骨湯含嘌呤、鉀及脂肪較高，痛風與腎病長者不宜。',
+    steps: [
+      '霸王花浸軟洗淨，蜜棗2粒洗淨，豬脊骨汆水去除血水。',
+      '水滾後放入所有食材，大火煮20分鐘後轉小火煲1.5小時。',
+      '飲用前撇去湯面浮油，加極少許鹽調味。'
+    ]
+  },
+  {
+    id: 'soup-2',
+    name: '青紅蘿蔔豬骨湯',
+    category: '滋補湯水',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout', 'kidney'],
+    tcm: { nature: '平涼', meridian: '脾、胃、肺經', efficacy: '消積化滯、寬中下氣、清熱利尿、潤肺生津。' },
+    western: '【豐富胡蘿蔔素&助消化】青蘿蔔消食導滯，紅蘿蔔富含胡蘿蔔素轉化為維他命A，促進長者視力與腸道健康。老火肉湯嘌呤較高，痛風者慎飲。',
+    steps: [
+      '青蘿蔔、紅蘿蔔去皮切大塊，豬骨汆水洗淨。',
+      '加入陳皮一角，水滾後放入所有材料煲1.5小時。'
+    ]
+  },
+  {
+    id: 'soup-3',
+    name: '蓮藕綠豆章魚豬湯',
+    category: '滋補湯水',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout', 'kidney'],
+    tcm: { nature: '微涼', meridian: '心、脾、胃經', efficacy: '健脾開胃、滋陰養血、清熱解毒、涼血散瘀。' },
+    western: '【養血補鐵&健脾】蓮藕含黏液蛋白與鐵質，章魚乾增添鮮味與蛋白質；但章魚乾與綠豆嘌呤及磷含量極高，痛風發作期與腎病長者禁止飲用。',
+    steps: [
+      '蓮藕去皮切厚塊，綠豆浸泡，章魚乾剪小塊浸軟，豬腿汆水。',
+      '所有材料入鍋加水大火煮沸，轉小火煲2小時至蓮藕粉軟。'
+    ]
+  },
+  {
+    id: 'soup-4',
+    name: '花生黑豆雞腳湯',
+    category: '滋補湯水',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout', 'hyperlipidemia', 'kidney'],
+    tcm: { nature: '微溫', meridian: '肝、腎、脾經', efficacy: '補腎養血、強筋健骨、潤膚養顏。黑豆入腎，雞腳膠質豐富。' },
+    western: '【強化關節與骨骼】黑豆富含花青素與植物蛋白，花生提供優質脂肪酸。注意：雞腳油脂與嘌呤極高，豆類含高嘌呤高鉀，高血脂、痛風及腎病長者不宜。',
+    steps: [
+      '花生黑豆提前浸泡2小時，雞腳去爪尖汆水。',
+      '加入紅棗去核，慢火煲1.5小時至湯汁濃郁。'
+    ]
+  },
+  {
+    id: 'soup-5',
+    name: '冬瓜薏米瘦肉湯',
+    category: '滋補湯水',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['kidney'],
+    tcm: { nature: '涼微寒', meridian: '脾、胃、肺、小腸經', efficacy: '清熱祛濕、利水消腫、健脾止瀉。廣東夏日祛濕名湯。' },
+    western: '【消腫降壓&祛濕】冬瓜高鉀低鈉，薏米促進水分代謝與腸道蠕動，能有效緩解長者肢體浮腫與身重感。慢性腎病控水控鉀者需慎用。',
+    steps: [
+      '冬瓜連皮切塊洗淨，生熟薏米各半浸泡，瘦肉汆水。',
+      '加水煮沸後轉小火煲1小時即可。'
+    ]
+  },
+  {
+    id: 'soup-6',
+    name: '羅漢果西洋菜豬骨湯',
+    category: '滋補湯水',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout', 'kidney'],
+    tcm: { nature: '涼性', meridian: '肺、大腸經', efficacy: '清肺潤燥、化痰止咳、潤腸通便。' },
+    western: '【滋潤喉嚨&預防便秘】羅漢果天然甜味不升血糖，西洋菜富含維他命C、K及膳食纖維，適合喉嚨乾涸與咳嗽長者。老火豬骨湯嘌呤高，痛風者慎飲。',
+    steps: [
+      '西洋菜洗淨，羅漢果破開取半個，豬骨汆水。',
+      '水大滾後才放入西洋菜(防止湯苦)，加入羅漢果與豬骨煲1.5小時。'
+    ]
+  },
+  {
+    id: 'soup-7',
+    name: '蕃茄薯仔瘦肉湯',
+    category: '滋補湯水',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['kidney'],
+    tcm: { nature: '平微酸', meridian: '脾、胃經', efficacy: '健脾開胃、生津止渴、益氣和中。' },
+    western: '【抗氧化&穩定血壓】番茄富含茄紅素保護心血管，薯仔富含鉀離子輔助降血壓。提醒：番茄與薯仔鉀含量極高，慢性腎病患者切勿飲用。',
+    steps: [
+      '番茄切塊，薯仔去皮切塊，瘦肉切片用生粉醃製。',
+      '滾水放入番茄薯仔煮25分鐘，最後加入瘦肉片滾熟即關火。'
+    ]
+  },
+  {
+    id: 'soup-8',
+    name: '紫菜豆腐蝦皮湯',
+    category: '滋補湯水',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout', 'kidney', 'hypertension'],
+    tcm: { nature: '涼性', meridian: '肝、胃、腎經', efficacy: '清熱化痰、軟堅散結、補鈣養血。' },
+    western: '【極速補鈣&補碘】紫菜與蝦皮為天然補鈣高手，豆腐提供優質蛋白。但紫菜與蝦皮鈉含量高且嘌呤、磷極高，高血壓、痛風及腎病長者慎飲。',
+    steps: [
+      '水滾後放入豆腐丁與蝦皮煮5分鐘。',
+      '加入紫菜撕碎煮2分鐘，滴入少許香油即可出鍋。'
+    ]
+  },
+  {
+    id: 'west-1',
+    name: '西式三文魚藜麥溫沙律',
+    category: '西式菜式',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout'],
+    tcm: { nature: '溫平', meridian: '脾、胃經', efficacy: '暖胃健脾、補虛勞、益氣血。' },
+    western: '【防腦退化&降血脂】三文魚富含DHA與EPA (Omega-3)，為腦細胞膜重要成分，有效延緩長者腦退化與記憶力衰退；藜麥提供完整必需胺基酸及高纖，有助降低血液壞膽固醇(LDL)。',
+    steps: [
+      '藜麥加水煮熟瀝乾，三文魚切塊撒微量黑椒煎熟。',
+      '搭配溫熱的熟西蘭花與小番茄，淋上少許橄欖油拌勻。'
+    ]
+  },
+  {
+    id: 'west-2',
+    name: '意式香草烤雞胸配彩椒',
+    category: '西式菜式',
+    isUniversal: true,
+    type: 'recipe',
+    unsuitable: [],
+    tcm: { nature: '微溫', meridian: '脾、胃經', efficacy: '溫中益氣、補精添髓。彩椒開胃理氣。' },
+    western: '【維持肌肉量&提升免疫力】精瘦雞胸肉提供豐富分支鏈胺基酸(BCAA)，能迅速修復長者肌肉組織防止肌少症；彩椒富含維他命C，刺激膠原蛋白合成，保護關節健康。',
+    steps: [
+      '雞胸肉用橄欖油與牛至香草醃製15分鐘。',
+      '甜彩椒切塊與雞胸肉一同放入氣炸鍋或烤箱180度烤12分鐘至熟。'
+    ]
+  },
+  {
+    id: 'west-3',
+    name: '西式羅宋蔬菜濃湯',
+    category: '西式菜式',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['kidney', 'hypertension'],
+    tcm: { nature: '涼微酸', meridian: '胃、脾經', efficacy: '生津止渴、健胃消食、清熱解毒。' },
+    western: '【護心降壓&抗氧化】融合番茄茄紅素、洋蔥槲皮素與胡蘿蔔素，強效保護心血管彈性。但湯水含鉀鈉相對較高，慢性腎病及嚴重高血壓長者宜選擇低鈉版本。',
+    steps: [
+      '番茄、胡蘿蔔、洋蔥、捲心菜切丁。',
+      '少許橄欖油炒香蔬菜，加水慢火燉煮40分鐘至軟爛即可。'
+    ]
+  },
+
+  {
+    id: 'jap-1',
+    name: '日式茶碗蒸蛋白鮮蝦',
+    category: '日式菜式',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout'],
+    tcm: { nature: '平溫', meridian: '脾、胃、腎經', efficacy: '補腎壯陽、健脾開胃、滋陰潤燥。' },
+    western: '【極易消化&保持肌肉量】蒸蛋質地極為滑嫩，零咀嚼負擔；鮮蝦與蛋白提供極高比例優質蛋白質，含有蝦青素抗氧化劑，幫助長者維持肌肉量並保護心血管。',
+    steps: [
+      '蛋白加高湯水(1:2)打勻過篩，鮮蝦去殼去蝦線。',
+      '倒入碗中中火蒸5分鐘，放入鮮蝦再蒸3分鐘至凝固。'
+    ]
+  },
+  {
+    id: 'jap-2',
+    name: '日式清蒸鹽麴鯖魚',
+    category: '日式菜式',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout'],
+    tcm: { nature: '溫性', meridian: '脾、胃經', efficacy: '暖胃補虛、充精添髓。鹽麴能發酵助消化。' },
+    western: '【護心清血管&延緩腦退化】鯖魚為Omega-3(EPA/DHA)含量最高的深海魚之一，能有效降低血液三酸甘油酯與壞膽固醇，保持血管通暢並維持長者大腦認知功能。',
+    steps: [
+      '鯖魚表面抹少許鹽麴醃製20分鐘。',
+      '墊上薑片，大火蒸10分鐘至魚肉熟透即可食用。'
+    ]
+  },
+  {
+    id: 'grain-1',
+    name: '燕麥藜麥飯',
+    category: '五谷',
+    isUniversal: true,
+    type: 'ingredient',
+    unsuitable: [],
+    tcm: { nature: '平性', meridian: '脾、胃經', efficacy: '益氣寬中、和胃除煩。充沛體力而不傷脾胃。' },
+    western: '【穩定血糖&降低膽固醇】低升糖指數(GI)主食，含有水溶性β-聚葡萄糖，可延緩澱粉分解，防止餐後血糖飆升，是糖尿病與高血脂長者替代白米飯的最佳首選。',
+    steps: ['白米與燕麥藜麥以2:1比例混合洗淨，加水浸泡20分鐘後正常煮飯。']
+  },
+  {
+    id: 'grain-2',
+    name: '養生紫黑米飯',
+    category: '五谷',
+    isUniversal: true,
+    type: 'ingredient',
+    unsuitable: [],
+    tcm: { nature: '溫性', meridian: '脾、腎經', efficacy: '滋陰補腎、健脾暖肝、明目活血。' },
+    western: '【抗氧化&延緩大腦衰老】外皮富含天然花青素(Anthocyanin)，為極強的抗氧化劑，能保護腦部血管、延緩認知退化，並含豐富膳食纖維促進腸道健康。',
+    steps: ['黑米提前浸泡2小時，與白米以1:2混合蒸煮，飯質香軟。']
+  },
+
+  {
+    id: 'veg-1',
+    name: '菜心',
+    category: '蔬果',
+    isUniversal: true,
+    type: 'ingredient',
+    unsuitable: [],
+    tcm: { nature: '微涼', meridian: '脾、胃、肝經', efficacy: '清熱解毒、通利腸胃、養胃生津。' },
+    western: '【補鈣&腸道健康】香港最熱門街市蔬菜，含有豐富鈣質與維他命C，能幫助預防骨質疏鬆及促進消化。',
+    steps: ['切段用少許薑絲白灼，或與瘦肉快炒。']
+  },
+  {
+    id: 'veg-2',
+    name: '大白菜',
+    category: '蔬果',
+    isUniversal: true,
+    type: 'ingredient',
+    unsuitable: [],
+    tcm: { nature: '微涼', meridian: '胃、大腸經', efficacy: '清熱除煩、解毒利尿、通利腸胃。' },
+    western: '【促進排便&低熱量】高水分與高纖維，含有豐富維他命C與粗纖維，能促進長者腸道蠕動，防止習慣性便秘。',
+    steps: ['切塊後可用少許薑絲上湯浸煮或清炒。']
+  },
+  {
+    id: 'veg-3',
+    name: '椰菜(捲心菜)',
+    category: '蔬果',
+    isUniversal: true,
+    type: 'ingredient',
+    unsuitable: [],
+    tcm: { nature: '平性', meridian: '脾、胃經', efficacy: '補髓利水、益臟腑、清熱止痛。' },
+    western: '【保護胃黏膜】富含維他命U(S-甲基蛋氨酸)，能有效修復長者胃黏膜、預防胃潰瘍，且口感清甜。',
+    steps: ['切絲或切片快炒，或與瘦肉一同燉煮。']
+  },
+  {
+    id: 'veg-4',
+    name: '娃娃菜',
+    category: '蔬果',
+    isUniversal: true,
+    type: 'ingredient',
+    unsuitable: [],
+    tcm: { nature: '微涼', meridian: '胃、大腸經', efficacy: '清熱解毒、滋陰潤燥、養胃生津。' },
+    western: '【極易消化&質地柔軟】質地比大白菜更細嫩爽口，熱量極低且口感甜美，非常適合咀嚼力較弱長者。',
+    steps: ['對半剖開，加入少許高湯上湯浸熟即可享用。']
+  },
+  {
+    id: 'veg-5',
+    name: '節瓜(毛瓜)',
+    category: '蔬果',
+    isUniversal: true,
+    type: 'ingredient',
+    unsuitable: [],
+    tcm: { nature: '平性', meridian: '脾、胃、大腸經', efficacy: '健脾開胃、清熱解毒、生津止渴、利尿消腫。' },
+    western: '【低鈉護腎&穩血壓】正宗正氣瓜類，含水量高且鈉離子低，不會對長者腎臟造成任何負擔，全病通用。',
+    steps: ['去皮切塊，清蒸、滾瘦肉湯或炒蛋皆可。']
+  },
+  {
+    id: 'veg-6',
+    name: '冬瓜',
+    category: '蔬果',
+    isUniversal: true,
+    type: 'ingredient',
+    unsuitable: [],
+    tcm: { nature: '微涼', meridian: '肺、大腸、小腸、膀胱經', efficacy: '清熱祛濕、利水消腫、解暑除煩。' },
+    western: '【輔助降壓&消水腫】含有高丙醇二酸，能抑制糖類轉化為脂肪；高鉀低鈉，有助多餘鈉離子排出體外。',
+    steps: ['去皮切厚片，煮湯或蝦米蒸冬瓜皆十分安全合適。']
+  },
+  {
+    id: 'veg-7',
+    name: '芥菜',
+    category: '蔬果',
+    isUniversal: true,
+    type: 'ingredient',
+    unsuitable: [],
+    tcm: { nature: '溫性', meridian: '肺、胃經', efficacy: '宣肺化痰、溫中利氣、開胃消食。' },
+    western: '【豐富維他命K&保護骨骼】帶有天然微苦風味，含豐富鈣質與維他命K，有助鈣質沉積於骨骼預防骨質疏鬆。',
+    steps: ['滾水加薑片焯燙去除苦味，配瘦肉煮成滾湯。']
+  },
+  {
+    id: 'veg-8',
+    name: '西洋菜',
+    category: '蔬果',
+    isUniversal: true,
+    type: 'ingredient',
+    unsuitable: [],
+    tcm: { nature: '涼性', meridian: '肺、胃經', efficacy: '清肺滌熱、潤肺止咳、利尿消腫。' },
+    western: '【抗氧化&清肺】富含異硫氰酸酯與維他命A、C，能滋潤呼吸道，適合乾咳上火長者食用。',
+    steps: ['洗淨後放入沸水快炒，或加入湯水中煮至軟身。']
+  },
+  {
+    id: 'fruit-1',
+    name: '紅蘋果(去皮生切)',
+    category: '水果',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['chewing'],
+    tcm: { nature: '平性', meridian: '脾、胃經', efficacy: '生津潤肺、健脾益氣、開胃醒酒。' },
+    western: '【降膽固醇&穩血糖】含豐富果膠(水溶性纖維)，能結合膽固醇排出體外；低GI水果。質地較硬，無牙或咀嚼困難長者需切極薄片或蒸熟食用。',
+    steps: ['洗淨去皮，切極薄片或蒸5分鐘至微軟後給長者食用。']
+  },
+  {
+    id: 'fruit-2',
+    name: '香蕉',
+    category: '水果',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['diabetes', 'kidney'],
+    tcm: { nature: '寒涼', meridian: '脾、胃、大腸經', efficacy: '清熱潤腸、通便解毒、潤肺止渴。' },
+    western: '【預防便秘&舒緩情緒】富含膳食纖維與色胺酸，改善長者腸道蠕動與睡眠品質。但糖分及鉀高，糖尿病及腎病長者需控量。',
+    steps: ['挑選熟透有黑斑的香蕉，質地柔軟最易消化。']
+  },
+  {
+    id: 'fruit-3',
+    name: '鮮橙',
+    category: '水果',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['diabetes', 'kidney'],
+    tcm: { nature: '涼微酸', meridian: '胃、肺經', efficacy: '生津止渴、開胃下氣、和胃止嘔。' },
+    western: '【強效維他命C&護血管】高含量維他命C與橙皮苷，提升長者免疫力並保護血管彈性。含鉀與果糖，腎病及糖尿病需限量。',
+    steps: ['去皮切薄片或小塊食用，避免空腹食用。']
+  },
+  {
+    id: 'fruit-4',
+    name: '提子(葡萄)',
+    category: '水果',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['diabetes', 'kidney'],
+    tcm: { nature: '平性', meridian: '脾、肺、腎經', efficacy: '補氣血、強筋骨、利尿消腫。養血明目佳品。' },
+    western: '【白藜蘆醇&護心】外皮與籽富含白藜蘆醇與原花青素，具強效抗氧化效果。但果糖含量高，糖尿病者需控制份量。',
+    steps: ['洗淨去皮去籽後給長者享用，防止嗆噎。']
+  },
+  {
+    id: 'fruit-5',
+    name: '菠蘿(鳳梨)',
+    category: '水果',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['diabetes'],
+    tcm: { nature: '平微酸', meridian: '脾、胃經', efficacy: '健脾消食、清解暑熱、生津止渴。' },
+    western: '【鳳梨酵素助消化】含有天然蛋白酶，能幫助長者分解蛋白質肉類，緩解餐後胃脹。但GI值較高，糖尿病者需限量。',
+    steps: ['切塊後浸淡鹽水10分鐘，可減少對口腔黏膜刺激。']
+  },
+  {
+    id: 'fruit-6',
+    name: '士多啤梨(草莓)',
+    category: '水果',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['kidney'],
+    tcm: { nature: '涼微酸', meridian: '脾、肺經', efficacy: '潤肺生津、健脾和胃、涼血解毒。' },
+    western: '【低GI護心&豐富鞣花酸】升糖指數低，富含鞣花酸與維他命C，對血糖十分友好。鉀含量中等，腎病患者適量。',
+    steps: ['用鹽水沖洗乾淨，切半即可直接享用。']
+  },
+  {
+    id: 'fruit-7',
+    name: '楊桃',
+    category: '水果',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['kidney'],
+    tcm: { nature: '寒性', meridian: '肺、胃經', efficacy: '清熱生津、利尿解毒、下氣和中。' },
+    western: '【腎病長者禁忌！】楊桃含有神經毒素(Caramboxin)，慢性腎臟病或洗腎長者絕對禁止食用，否則可致抽搐神智不清。健康長者可清熱生津。',
+    steps: ['腎功能正常者去邊切星形塊食用。']
+  },
+  {
+    id: 'fruit-8',
+    name: '鮮無花果',
+    category: '水果',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['diabetes', 'kidney'],
+    tcm: { nature: '平甘', meridian: '脾、胃、大腸經', efficacy: '健脾開胃、潤肺止咳、清熱潤腸通便。' },
+    western: '【潤腸通便神仙果】含有豐富水溶性膳食纖維與蛋白酶，能顯著改善長者習慣性便秘。含鉀及糖，糖尿病與腎病需控制。',
+    steps: ['洗淨後切開即可直接連皮食用。']
+  },
+  {
+    id: 'fruit-9',
+    name: '西瓜',
+    category: '水果',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['diabetes', 'kidney'],
+    tcm: { nature: '寒性', meridian: '心、胃、膀胱經', efficacy: '清熱解暑、生津止渴、利尿除煩。天然白虎湯。' },
+    western: '【補充水分&茄紅素】含有高量水分與瓜氨酸，能促進尿液排出。但升糖指數(GI)高且含鉀量高，糖尿病及腎病長者慎食。',
+    steps: ['切小塊去籽，避免冷藏過度傷脾胃。']
+  },
+  {
+    id: 'fruit-10',
+    name: '雪梨',
+    category: '水果',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['diabetes'],
+    tcm: { nature: '涼性', meridian: '肺、胃經', efficacy: '潤肺清心、消痰降火、解毒生津。' },
+    western: '【潤肺止咳&水分豐富】高水分與山梨醇，能滋潤乾涸呼吸道並緩解便秘。糖分中等，糖尿病長者宜控制於1/2個以內。',
+    steps: ['去皮切塊食用，或加入少許川貝蒸熟食用。']
+  },
+  {
+    id: 'fruit-11',
+    name: '鮮桃',
+    category: '水果',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['diabetes'],
+    tcm: { nature: '溫性', meridian: '胃、大腸經', efficacy: '生津潤腸、活血消積、補氣養血。' },
+    western: '【補鐵&潤腸】含有豐富果膠與有機酸，能刺激消化液分泌。糖尿病長者需注意控制食用量。',
+    steps: ['洗淨去皮切塊食用。']
+  },
+  {
+    id: 'fruit-12',
+    name: '黑布冧(黑李子)',
+    category: '水果',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['diabetes', 'kidney'],
+    tcm: { nature: '平微酸', meridian: '肝、腎經', efficacy: '清肝滌熱、生津利水、清肝明目。' },
+    western: '【高花青素&抗氧化】果皮富含原花青素，具備優異抗氧化及保護心血管能力。含有高鉀與天然糖分，腎病與血糖偏高者控量。',
+    steps: ['洗淨切塊去除果核後食用。']
+  },
+
+  {
+    id: 'prot-1',
+    name: '魚肉(淡水蒸魚/清蒸魚片)',
+    category: '蛋白質',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['gout'],
+    tcm: { nature: '平性', meridian: '脾、胃經', efficacy: '健脾補氣、利水消腫、溫中和胃。質地極易消化。' },
+    western: '【肌少症救星&超易吸收】肌纖維短，是長者補充蛋白質最理想來源；富含必需胺基酸，預防肌肉衰退。魚肉含中等嘌呤，痛風發作期需適量。',
+    steps: ['魚片鋪薑絲大火蒸6-8分鐘至熟即可享用。']
+  },
+  {
+    id: 'prot-2',
+    name: '雞肉(去皮精瘦雞肉)',
+    category: '蛋白質',
+    isUniversal: true,
+    type: 'ingredient',
+    unsuitable: [],
+    tcm: { nature: '微溫', meridian: '脾、胃經', efficacy: '溫中益氣、補精添髓、強筋健骨。' },
+    western: '【優質低脂蛋白質】去皮後脂肪與飽和脂肪酸極低，提供極佳支鏈胺基酸(BCAA)，能有效維持長者腿部肌力，全病安全。',
+    steps: ['去皮切塊，配香菇或黑木耳清蒸。']
+  },
+  {
+    id: 'prot-3',
+    name: '牛肉(精瘦牛肉)',
+    category: '蛋白質',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['gout'],
+    tcm: { nature: '微溫', meridian: '脾、胃經', efficacy: '補中益氣、滋養脾胃、強筋健骨。' },
+    western: '【補血防貧血&補充鋅質】血紅素鐵質與鋅吸收率極高，能快速改善長者頭暈與貧血體質。紅肉含嘌呤較高，痛風者需控制。',
+    steps: ['切薄片加生粉醃軟，快炒或煮湯。']
+  },
+  {
+    id: 'prot-4',
+    name: '羊肉',
+    category: '蛋白質',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['gout', 'hypertension'],
+    tcm: { nature: '溫熱', meridian: '脾、腎經', efficacy: '溫中健脾、補腎壯陽、禦寒暖胃。秋冬長者溫補勝品。' },
+    western: '【暖身驅寒&高鐵質】含高量左旋肉鹼與鐵質，能增強長者血液循環與禦寒能力。性質偏溫熱且嘌呤較高，高血壓及痛風長者慎食。',
+    steps: ['配生薑、白蘿蔔慢火清燉，能去除腥膻味。']
+  },
+  {
+    id: 'prot-5',
+    name: '豬肉(瘦豚肉)',
+    category: '蛋白質',
+    isUniversal: true,
+    type: 'ingredient',
+    unsuitable: [],
+    tcm: { nature: '平性', meridian: '脾、胃、腎經', efficacy: '滋陰潤燥、補中益氣、養血生津。' },
+    western: '【維他命B1首選】精瘦豬肉富含維他命B1(硫胺素)，能幫助長者代謝碳水化合物、消除疲勞並維持神經系統健康，低脂安全。',
+    steps: ['剁成肉碎蒸肉餅，或切薄片煮上湯。']
+  },
+  {
+    id: 'prot-6',
+    name: '鴨肉',
+    category: '蛋白質',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['gout'],
+    tcm: { nature: '微涼', meridian: '脾、胃、肺、腎經', efficacy: '滋陰養胃、利水消腫、清虛勞之熱。' },
+    western: '【滋陰清熱&B群豐富】性質微涼不傷胃，適合口乾上火長者食用。鴨肉含中等嘌呤，痛風患者需適量。',
+    steps: ['去皮配冬瓜或陳皮慢火燉煲。']
+  },
+  {
+    id: 'prot-7',
+    name: '鵝肉',
+    category: '蛋白質',
+    isUniversal: false,
+    type: 'ingredient',
+    unsuitable: ['gout', 'hyperlipidemia'],
+    tcm: { nature: '平性', meridian: '脾、肺經', efficacy: '益氣補虛、和胃止渴、利肺止咳。' },
+    western: '【不飽和脂肪酸相對較高】脂肪酸組成接近橄欖油，含優質蛋白質。但鵝皮油脂較豐富且嘌呤較高，高血脂及痛風長者宜去皮食用。',
+    steps: ['去皮清蒸或配合生薑陳皮燉煮。']
+  },
+  {
+    id: 'prot-8',
+    name: '免治牛肉燴薯仔',
+    category: '蛋白質',
+    isUniversal: false,
+    type: 'recipe',
+    unsuitable: ['gout', 'diabetes', 'kidney'],
+    tcm: { nature: '溫平', meridian: '脾、胃經', efficacy: '健脾和胃、補中益氣、強筋健骨。質地綿軟。' },
+    western: '【滑順易吞嚥&豐富鐵質】免治牛肉與熟透薯仔質地極度軟爛，容易咀嚼。但薯仔高鉀高澱粉，牛肉含嘌呤，糖尿病、腎病及痛風者慎食。',
+    steps: [
+      '薯仔切小丁煮軟，免治牛肉炒香加入少許高湯。',
+      '倒入薯仔丁燜煮至黏稠，加少許醬油調味即可。'
+    ]
+  }
+];
+
+let currentTab = 'filter';
+let currentFontSize = 'sm'; // 'sm' (100%), 'md' (120%), 'lg' (140%)
+let selectedWesternConditions = new Set();
+let selectedTcmConditions = new Set();
+let selectedLibraryCategory = 'ALL';
+let aiChatHistory = []; // Multi-turn OpenAI/DeepSeek compatible history
+
+window.addEventListener('DOMContentLoaded', () => {
+  initApp();
+});
+
+function initApp() {
+  renderWesternButtons();
+  renderTcmButtons();
+  renderFilteredResults();
+  renderUniversalDishes();
+  renderLibraryCategoryPills();
+  renderLibrary();
+}
+
+function changeFontSize(size) {
+  currentFontSize = size;
+  const htmlEl = document.documentElement;
+  if (size === 'sm') {
+    htmlEl.style.fontSize = '16px';
+  } else if (size === 'md') {
+    htmlEl.style.fontSize = '19.2px'; // 1.2x
+  } else if (size === 'lg') {
+    htmlEl.style.fontSize = '22.4px'; // 1.4x
+  }
+
+  ['sm', 'md', 'lg'].forEach(s => {
+    const btn = document.getElementById(`btn-font-${s}`);
+    if (btn) {
+      if (s === size) {
+        btn.className = 'px-2.5 py-1 text-xs font-bold rounded-md transition-all bg-white text-teal-800 shadow';
+      } else {
+        btn.className = 'px-2.5 py-1 text-xs font-bold rounded-md transition-all text-teal-100 hover:text-white';
+      }
+    }
+  });
+}
+
+function renderWesternButtons() {
+  const container = document.getElementById('western-conditions');
+  container.innerHTML = WESTERN_CONDITIONS.map(cond => {
+    const isActive = selectedWesternConditions.has(cond.id);
+    return `
+      <button onclick="toggleWesternCondition('${cond.id}')"
+        class="p-2.5 rounded-xl border text-left text-xs font-bold transition-all flex items-center justify-between ${
+          isActive
+            ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+            : 'bg-blue-50/50 text-blue-900 border-blue-100 hover:bg-blue-100/60'
+        }">
+        <span class="flex items-center gap-1.5 truncate">
+          <i class="fa-solid ${cond.icon} text-sm ${isActive ? 'text-white' : 'text-blue-600'}"></i>
+          ${cond.name}
+        </span>
+        <i class="fa-solid ${isActive ? 'fa-circle-check' : 'fa-circle'} text-xs opacity-80"></i>
+      </button>
+    `;
+  }).join('');
+}
+
+function renderTcmButtons() {
+  const container = document.getElementById('tcm-conditions');
+  container.innerHTML = TCM_CONDITIONS.map(cond => {
+    const isActive = selectedTcmConditions.has(cond.id);
+    return `
+      <button onclick="toggleTcmCondition('${cond.id}')"
+        class="p-2.5 rounded-xl border text-left text-xs font-bold transition-all flex items-center justify-between ${
+          isActive
+            ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+            : 'bg-emerald-50/50 text-emerald-900 border-emerald-100 hover:bg-emerald-100/60'
+        }">
+        <span class="flex items-center gap-1.5 truncate">
+          <i class="fa-solid ${cond.icon} text-sm ${isActive ? 'text-white' : 'text-emerald-600'}"></i>
+          ${cond.name}
+        </span>
+        <i class="fa-solid ${isActive ? 'fa-circle-check' : 'fa-circle'} text-xs opacity-80"></i>
+      </button>
+    `;
+  }).join('');
+}
+
+function toggleWesternCondition(id) {
+  if (selectedWesternConditions.has(id)) {
+    selectedWesternConditions.delete(id);
+  } else {
+    selectedWesternConditions.add(id);
+  }
+  renderWesternButtons();
+  renderActiveTags();
+  renderFilteredResults();
+}
+
+function toggleTcmCondition(id) {
+  if (selectedTcmConditions.has(id)) {
+    selectedTcmConditions.delete(id);
+  } else {
+    selectedTcmConditions.add(id);
+  }
+  renderTcmButtons();
+  renderActiveTags();
+  renderFilteredResults();
+}
+
+function resetFilters() {
+  selectedWesternConditions.clear();
+  selectedTcmConditions.clear();
+  renderWesternButtons();
+  renderTcmButtons();
+  renderActiveTags();
+  renderFilteredResults();
+}
+
+function renderActiveTags() {
+  const tagsContainer = document.getElementById('active-tags');
+  const totalSelected = selectedWesternConditions.size + selectedTcmConditions.size;
+  
+  if (totalSelected === 0) {
+    tagsContainer.innerHTML = '<span class="text-xs text-gray-400 italic">尚未選擇(顯示全部安全菜式)</span>';
+    return;
+  }
+
+  let tagsHTML = '';
+  selectedWesternConditions.forEach(id => {
+    const cond = WESTERN_CONDITIONS.find(c => c.id === id);
+    tagsHTML += `
+      <span class="bg-blue-100 text-blue-800 border border-blue-200 text-xs px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
+        ${cond.name}
+        <i class="fa-solid fa-xmark cursor-pointer text-blue-600 hover:text-blue-900" onclick="toggleWesternCondition('${id}')"></i>
+      </span>
+    `;
+  });
+
+  selectedTcmConditions.forEach(id => {
+    const cond = TCM_CONDITIONS.find(c => c.id === id);
+    tagsHTML += `
+      <span class="bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
+        ${cond.name}
+        <i class="fa-solid fa-xmark cursor-pointer text-emerald-600 hover:text-emerald-900" onclick="toggleTcmCondition('${id}')"></i>
+      </span>
+    `;
+  });
+
+  tagsContainer.innerHTML = tagsHTML;
+}
+
+function renderFilteredResults() {
+  const grid = document.getElementById('filter-results-grid');
+  const badge = document.getElementById('filtered-count-badge');
+
+  const allActiveConditions = [
+    ...Array.from(selectedWesternConditions),
+    ...Array.from(selectedTcmConditions)
+  ];
+
+  // Strict Filter: Dish is safe ONLY IF none of its unsuitable items are in selected conditions
+  const safeItems = FOOD_DATABASE.filter(item => {
+    if (allActiveConditions.length === 0) return true;
+    return !item.unsuitable.some(unsuitableCond => allActiveConditions.includes(unsuitableCond));
+  });
+
+  badge.innerText = `共 ${safeItems.length} 項`;
+
+  if (safeItems.length === 0) {
+    grid.innerHTML = `
+      <div class="col-span-full bg-white p-8 rounded-3xl border border-dashed border-gray-300 text-center space-y-3">
+        <i class="fa-solid fa-shield-cat text-4xl text-amber-500"></i>
+        <h4 class="font-bold text-gray-800 text-base">目前條件組合較為嚴格</h4>
+        <p class="text-xs text-gray-500 max-w-sm mx-auto">為保護長者安全，系統已隱藏可能存在衝突風險的菜式。建議點選上方「全病通用」頁籤查看無差別安心膳食。</p>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = safeItems.map(item => createFoodCardHTML(item)).join('');
+}
+
+function renderUniversalDishes() {
+  const grid = document.getElementById('universal-dishes-grid');
+  const universals = FOOD_DATABASE.filter(item => item.isUniversal);
+  grid.innerHTML = universals.map(item => createFoodCardHTML(item, true)).join('');
+}
+
+function renderLibraryCategoryPills() {
+  const categories = ['ALL', '香港家常菜', '滋補湯水', '五谷', '蔬果', '水果', '蛋白質', '西式菜式', '日式菜式'];
+  const container = document.getElementById('category-pills');
+  container.innerHTML = categories.map(cat => {
+    const isActive = selectedLibraryCategory === cat;
+    return `
+      <button onclick="filterLibraryCategory('${cat}')"
+        class="px-3 py-1.5 rounded-xl whitespace-nowrap transition-all ${
+          isActive
+            ? 'bg-teal-700 text-white shadow-sm font-bold'
+            : 'bg-white text-gray-600 border border-gray-200 hover:bg-teal-50'
+        }">
+        ${cat === 'ALL' ? '全部食材菜式' : cat}
+      </button>
+    `;
+  }).join('');
+}
+
+function filterLibraryCategory(cat) {
+  selectedLibraryCategory = cat;
+  renderLibraryCategoryPills();
+  renderLibrary();
+}
+
+function renderLibrary() {
+  const searchInput = document.getElementById('library-search-input').value.trim().toLowerCase();
+  const grid = document.getElementById('library-results-grid');
+
+  const filtered = FOOD_DATABASE.filter(item => {
+    const matchesCat = (selectedLibraryCategory === 'ALL' || item.category === selectedLibraryCategory);
+    const matchesQuery = item.name.toLowerCase().includes(searchInput) ||
+      item.category.toLowerCase().includes(searchInput) ||
+      item.tcm.efficacy.toLowerCase().includes(searchInput) ||
+      item.western.toLowerCase().includes(searchInput);
+    return matchesCat && matchesQuery;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="col-span-full p-8 text-center text-gray-400 text-sm">
+        <i class="fa-solid fa-magnifying-glass text-2xl mb-2 block"></i>
+        找不到符合搜尋的食材或菜式。
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(item => createFoodCardHTML(item)).join('');
+}
+
+function createFoodCardHTML(item, isUniversalHighlight = false) {
+  return `
+    <div class="bg-white rounded-2xl border ${isUniversalHighlight ? 'border-emerald-300 ring-2 ring-emerald-400/20 shadow-md' : 'border-gray-200 shadow-sm'} p-4 flex flex-col justify-between hover:shadow-md transition-all">
+      <div>
+        <div class="flex items-center justify-between gap-2 mb-1.5">
+          <span class="text-xs px-2.5 py-0.5 rounded-full font-bold ${
+            isUniversalHighlight ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-600'
+          }">${item.category}</span>
+          ${item.isUniversal ? '<span class="text-[10px] bg-emerald-500 text-white font-black px-2 py-0.5 rounded-md"><i class="fa-solid fa-shield"></i> 全病通用</span>' : ''}
+        </div>
+        <h4 class="font-bold text-gray-900 text-base mb-2">${item.name}</h4>
+        <div class="space-y-1.5 text-xs text-gray-600 mb-3 line-clamp-3">
+          <p class="text-emerald-900"><b class="text-emerald-700">【中醫】</b>${item.tcm.nature}，歸${item.tcm.meridian}。${item.tcm.efficacy}</p>
+          <p class="text-blue-900"><b class="text-blue-700">【西醫】</b>${item.western}</p>
+        </div>
+      </div>
+      <button onclick="openModal('${item.id}')" class="w-full py-2 bg-teal-50 hover:bg-teal-100 text-teal-800 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all">
+        <i class="fa-solid fa-circle-info"></i> 詳細食療與「老友記簡單煮」
+      </button>
+    </div>
+  `;
+}
+
+let currentActiveFood = null;
+
+function openModal(foodId) {
+  const food = FOOD_DATABASE.find(f => f.id === foodId);
+  if (!food) return;
+
+  currentActiveFood = food;
+  document.getElementById('modal-title').innerText = food.name;
+  document.getElementById('modal-category').innerText = food.category;
+  document.getElementById('modal-tcm-nature').innerText = food.tcm.nature;
+  document.getElementById('modal-tcm-meridian').innerText = food.tcm.meridian;
+  document.getElementById('modal-tcm-efficacy').innerText = food.tcm.efficacy;
+  document.getElementById('modal-western-nutrition').innerText = food.western;
+
+  const unsuitableContainer = document.getElementById('modal-unsuitable-container');
+  if (food.unsuitable && food.unsuitable.length > 0) {
+    const unsuitableNames = food.unsuitable.map(uld => {
+      const match = WESTERN_CONDITIONS.find(w => w.id === uld) || TCM_CONDITIONS.find(t => t.id === uld);
+      return match ? match.name : uld;
+    }).join('、');
+    document.getElementById('modal-unsuitable').innerText = unsuitableNames;
+    unsuitableContainer.classList.remove('hidden');
+  } else {
+    unsuitableContainer.classList.add('hidden');
+  }
+
+  const stepsOl = document.getElementById('modal-cooking-steps');
+  stepsOl.innerHTML = food.steps.map(step => `<li class="leading-relaxed">${step}</li>`).join('');
+
+  document.getElementById('detail-modal').classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('detail-modal').classList.add('hidden');
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+}
+
+function speakModalText() {
+  if (!currentActiveFood) return;
+  const textToRead = `${currentActiveFood.name}。中醫食療：${currentActiveFood.tcm.nature}，歸${currentActiveFood.tcm.meridian}。${currentActiveFood.tcm.efficacy}。西醫好處：${currentActiveFood.western}。老友記簡單煮步驟：${currentActiveFood.steps.join('。')}`;
+  speakText(textToRead);
+}
+
+function speakText(text) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'zh-HK';
+    utterance.rate = 0.9;
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
+function startVoiceSearch(targetInputId) {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alertModal("您的瀏覽器暫不支持語音輸入，請用文字輸入。");
+    return;
+  }
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'zh-HK';
+  recognition.interimResults = true;
+
+  alertModal("正在聆聽中... 請說出搜尋詞");
+
+  recognition.onresult = function(event) {
+    let transcript = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      transcript += event.results[i][0].transcript;
+    }
+    document.getElementById(targetInputId).value = transcript;
+    if (targetInputId === 'library-search-input') renderLibrary();
+  };
+
+  recognition.onerror = function(e) {
+    console.error("Voice recognition error: ", e);
+    alertModal("語音識別出現錯誤，請重新再試或使用打字輸入。");
+  };
+
+  recognition.start();
+}
+
+let isAiListening = false;
+let aiRecognition = null;
+
+function toggleAiVoice() {
+  const btn = document.getElementById('btn-ai-voice');
+  const inputEl = document.getElementById('ai-text-input');
+
+  if (isAiListening) {
+    if (aiRecognition) aiRecognition.stop();
+    btn.classList.remove('pulse-animation', 'bg-red-600');
+    btn.classList.add('bg-purple-600');
+    isAiListening = false;
+    return;
+  }
+
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alertModal("您的瀏覽器暫不支持語音功能，請直接打字輸入。");
+    return;
+  }
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  aiRecognition = new SpeechRecognition();
+  aiRecognition.lang = 'zh-HK';
+  aiRecognition.continuous = false;
+  aiRecognition.interimResults = true;
+
+  let finalTranscript = '';
+
+  aiRecognition.onstart = function() {
+    isAiListening = true;
+    btn.classList.add('pulse-animation', 'bg-red-600');
+    btn.classList.remove('bg-purple-600');
+    inputEl.placeholder = "正在聆聽中... 請說話";
+  };
+
+  aiRecognition.onresult = function(event) {
+    let currentText = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      currentText += event.results[i][0].transcript;
+    }
+    inputEl.value = currentText;
+    finalTranscript = currentText;
+  };
+
+  aiRecognition.onerror = function(event) {
+    console.error("AI Voice recognition error:", event.error);
+    btn.classList.remove('pulse-animation', 'bg-red-600');
+    btn.classList.add('bg-purple-600');
+    isAiListening = false;
+    inputEl.placeholder = "請輸入您的症狀或飲食疑問...";
+    alertModal("未能收音，請檢查麥克風權限或改用打字輸入。");
+  };
+
+  aiRecognition.onend = function() {
+    btn.classList.remove('pulse-animation', 'bg-red-600');
+    btn.classList.add('bg-purple-600');
+    isAiListening = false;
+    inputEl.placeholder = "請輸入您的症狀或飲食疑問...";
+    if (finalTranscript.trim().length > 0) {
+      sendChatMessage();
+    }
+  };
+
+  try {
+    aiRecognition.start();
+  } catch (err) {
+    console.error("Failed to start speech recognition", err);
+  }
+}
+
+function handleAiInputKeydown(event) {
+  // 防止中文輸入法 (IME) 選字時按下 Enter 觸發發送
+  if (event.key === 'Enter' && !event.isComposing) {
+    event.preventDefault();
+    sendChatMessage();
+  }
+}
+
+async function sendChatMessage() {
+  const inputEl = document.getElementById('ai-text-input');
+  const message = inputEl.value.trim();
+  if (!message) return;
+
+  const chatLog = document.getElementById('chat-log');
+
+  // 1. 渲染使用者訊息
+  chatLog.innerHTML += `
+    <div class="flex items-start justify-end gap-2.5">
+      <div class="bg-purple-600 text-white p-3.5 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm leading-relaxed">
+        ${escapeHTML(message)}
+      </div>
+    </div>
+  `;
+  inputEl.value = '';
+  chatLog.scrollTop = chatLog.scrollHeight;
+
+  // 2. 寫入對話歷史
+  aiChatHistory.push({ role: 'user', content: message });
+  if (aiChatHistory.length > 10) {
+    aiChatHistory = aiChatHistory.slice(aiChatHistory.length - 10);
+  }
+
+  // 3. 顯示「思考中」
+  const thinkingId = 'thinking-' + Date.now();
+  chatLog.innerHTML += `
+    <div id="${thinkingId}" class="flex items-start gap-2.5">
+      <div class="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-xs shrink-0">AI</div>
+      <div class="bg-gray-100 text-gray-500 p-3.5 rounded-2xl rounded-tl-none text-xs flex items-center gap-2">
+        <i class="fa-solid fa-spinner fa-spin"></i> DeepSeek AI 營養顧問正在思考並撰寫「老友記簡單煮」食譜...
+      </div>
+    </div>
+  `;
+  chatLog.scrollTop = chatLog.scrollHeight;
+
+  try {
+    const systemInstruction = "你是一位親切、懂廣東話的中西醫雙修長者膳食專責AI顧問。請以簡短、清晰、關懷的語氣解答長者的飲食疑問。請記住之前的上下文對話內容。\n\n【重要指令】：只要你在回應中推介或提到任何菜式/食材，**每次都必須隨附「老友記簡單煮」簡易烹調步驟(分1、2、3步驟條列說明)**，並同時考慮長者常見病症(如糖尿病、高血壓、痛風、腎病、肌少症、骨質疏鬆、咬唔郁等)的安全注意事項。回答請控制在250字以內。";
+
+    // 4. 只發一次請求到自己的後端
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [
+          { role: 'system', content: systemInstruction },
+          ...aiChatHistory
+        ],
+        temperature: 0.7
+      })
+    });
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.error?.message || `HTTP ${response.status} 錯誤`);
+    }
+
+    const result = await response.json();
+    const aiReply = result.choices?.[0]?.message?.content || "抱歉，我暫時無法取得建議，請稍後再試。";
+
+    // 5. 寫入 AI 回覆到歷史
+    aiChatHistory.push({ role: 'assistant', content: aiReply });
+
+    document.getElementById(thinkingId)?.remove();
+
+    const responseDivId = 'ai-res-' + Date.now();
+    const formattedReply = escapeHTML(aiReply).replace(/\n/g, '<br>');
+
+    chatLog.innerHTML += `
+      <div class="flex items-start gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-xs shrink-0">AI</div>
+        <div class="bg-purple-50 text-purple-950 p-3.5 rounded-2xl rounded-tl-none max-w-[85%] border border-purple-100 leading-relaxed relative group">
+          <div id="${responseDivId}" class="text-sm space-y-1">${formattedReply}</div>
+          <button onclick="speakText(document.getElementById('${responseDivId}').innerText)" class="mt-3 text-xs text-purple-700 font-bold flex items-center gap-1 hover:underline bg-purple-100/60 px-2.5 py-1 rounded-lg">
+            <i class="fa-solid fa-volume-high"></i> 朗讀給長者聽
+          </button>
+        </div>
+      </div>
+    `;
+  } catch (err) {
+    console.error("DeepSeek AI Error:", err);
+    document.getElementById(thinkingId)?.remove();
+    chatLog.innerHTML += `
+      <div class="flex items-start gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xs shrink-0">!</div>
+        <div class="bg-red-50 text-red-800 p-3 rounded-2xl text-xs">
+          API 連線或 Key 驗證失敗 (${escapeHTML(err.message || "請檢查 API Key")})，請重新確認後再試。
+        </div>
+      </div>
+    `;
+  }
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+function switchTab(tabId) {
+  currentTab = tabId;
+  ['filter', 'universal', 'library', 'ai'].forEach(t => {
+    const view = document.getElementById(`view-${t}`);
+    const btn = document.getElementById(`tab-${t}`);
+    if (t === tabId) {
+      view.classList.remove('hidden');
+      btn.className = 'flex-1 min-w-[90px] py-2.5 px-3 rounded-xl font-bold text-sm text-center transition-all bg-teal-600 text-white shadow-sm flex items-center justify-center gap-1.5';
+    } else {
+      view.classList.add('hidden');
+      btn.className = 'flex-1 min-w-[90px] py-2.5 px-3 rounded-xl font-bold text-sm text-center transition-all text-gray-600 hover:bg-teal-50 flex items-center justify-center gap-1.5';
+    }
+  });
+}
+
+function alertModal(msg) {
+  const toast = document.createElement('div');
+  toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-4 py-3 rounded-2xl shadow-xl z-50 animate-in fade-in duration-200 font-bold';
+  toast.innerText = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+function escapeHTML(str) {
+  if (!str) return '';
+  return str.replace(/[&<>'"]/g,
+    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+  );
+}
+</script>
+</body>
+</html>
