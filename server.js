@@ -1,8 +1,12 @@
-const key = process.env.DEEPSEEK_API_KEY || '';
-console.log('Key length:', key.length, '| First 6:', key.slice(0, 6), '| Last 4:', key.slice(-4));
-
 const express = require('express');
 const app = express();
+
+const key = process.env.DEEPSEEK_API_KEY || '';
+console.log('=== Key 调试 ===');
+console.log('Key length:', key.length);
+console.log('Key first 8:', key.slice(0, 8));
+console.log('Key last 6:', key.slice(-6));
+console.log('=== 调试结束 ===');
 
 app.use(express.json());
 app.use(express.static('public'));
